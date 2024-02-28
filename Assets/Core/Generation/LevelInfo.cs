@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelInfo : MonoBehaviour
@@ -8,5 +9,14 @@ public class LevelInfo : MonoBehaviour
     public int linesCount;
     public Vector3 nextSpawnPos = Vector3.zero; 
     public List<Transform> types;
-    public Transform previousSpawnedLevel;
+    public List<Transform> previousSpawnedLevels;
+
+    public void Clear()
+    {
+        foreach (var level in previousSpawnedLevels)
+        {
+            Destroy(level.gameObject);
+        }
+        previousSpawnedLevels.Clear();
+    }
 }

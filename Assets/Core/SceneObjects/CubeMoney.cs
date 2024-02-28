@@ -1,7 +1,4 @@
-﻿using System;
-using AutoLayout3D;
-using UnityEditor.SceneManagement;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core.SceneObjects
 {
@@ -13,11 +10,9 @@ namespace Core.SceneObjects
         {
             var cube = other.GetComponent<CubeMoney>();
             if (cube != null && cube.isCharacterCube && !isCharacterCube)
-            { 
+            {
                 _character = cube.GetComponentInParent<Character>();
-                _character.AddCube(this);
-                isCharacterCube = true;
-                gameObject.AddComponent<LayoutElement3D>();
+                InteractEvents.OnMoneyInteract(this);
             }
         }
     }

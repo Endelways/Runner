@@ -17,6 +17,8 @@ public class GenerateDecoration : MonoBehaviour
         level = GetComponentInChildren<LevelTrigger>().level;
         GenerateCubeMoneys();
         GenerateLets();
+        cubeMoneysPositionsList.Clear();
+        letsPositionsList.Clear();
     }
     
     private void GenerateCubeMoneys()
@@ -31,7 +33,7 @@ public class GenerateDecoration : MonoBehaviour
                     0.9f,
                     (level.length / 2 - level.lineWidth) * -1 + Random.Range(0, 25) * level.lineWidth + transform.position.z
                         );
-                if (cubeMoneysPositionsList.Count(vec => Vector3.Distance(vec, newVec) < 5) < 1)
+                if (cubeMoneysPositionsList.Count(vec => Vector3.Distance(vec, newVec) < 3) < 1)
                 {
                     cubeMoneysPositionsList.Add(newVec);
                 }
@@ -57,7 +59,7 @@ public class GenerateDecoration : MonoBehaviour
                     transform.position.z + Random.Range((level.length - 1) / 2, -(level.length-1) / 2)
                 );
                 if (letsPositionsList.Count(vec => Vector3.Distance(vec, newVec) < 6) < 1 && 
-                    cubeMoneysPositionsList.Count(vec => Vector3.Distance(vec, newVec) < 3) < 1)
+                    cubeMoneysPositionsList.Count(vec => Vector3.Distance(vec, newVec) < 2) < 1)
                 {
                     letsPositionsList.Add(newVec);
                 }

@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoLayout3D;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace Core.SceneObjects
 {
     public class LetCube : MonoBehaviour
     {
-        private LetColumn Column { get; set; }
+        public LetColumn Column { get; private set; }
         
 
         private void Start()
@@ -18,25 +14,21 @@ namespace Core.SceneObjects
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<CubeMoney>())
+            var cubeMoney = other.GetComponent<CubeMoney>();
+            var anotherColumns = Column.Let.Columns.Where(column => column != Column);
+            foreach(var column in anotherColumns)
             {
-                var character = other.GetComponentInParent<Character>();
-                if (character != null)
+                foreach (var cubeCollider in column.GetComponentsInChildren<Collider>())
                 {
-                    if (Column.Cubes.Count > character.Cubes.Count - 1)
-                    {
-                        character.Die();
-                    }
-                    else
-                    {
-                        var cube = other.GetComponent<CubeMoney>().transform;
-                        Destroy(cube.GetComponent<LayoutElement3D>());
-                        cube.GetComponent<Collider>().isTrigger = false;
-                        cube.transform.parent = Column.Let.Ground;
-                        character.Cubes.Remove(cube); 
-                        //Column.Let.Disable();
-                    }
+                    cubeCollider.isTrigger = false;
                 }
+               
+            }
+
+            GetComponent<Collider>().isTrigger = false;
+            if (cubeMoney != null && cubeMoney.isCharacterCube)
+            { 
+                InteractEvents.OnLetInteract(this, cubeMoney);
             }
             
         }

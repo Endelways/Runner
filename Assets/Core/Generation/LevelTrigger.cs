@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Core.Generation
 {
     public class LevelTrigger : MonoBehaviour
     {
+        public static GameObject lastCompletedLevel;
         public LevelInfo level;
         private void OnTriggerEnter(Collider other)
         {
             Destroy(gameObject.GetComponent<Collider>());
-            if(level.previousSpawnedLevel != null)
-                Destroy(level.previousSpawnedLevel.gameObject);
-            LevelGeneration.SpawnNewLevel(level);
-            level.previousSpawnedLevel = transform.parent;
+            if (lastCompletedLevel != null)
+            {
+                level.previousSpawnedLevels.Remove(lastCompletedLevel.transform);
+                Destroy(lastCompletedLevel);
+            }
+            lastCompletedLevel = transform.parent.gameObject;
+            LevelGenerator.SpawnNewLevel(level);
             Debug.Log($"Collision {gameObject.name} and {other.gameObject.name}");
-            
         }
     }
 }

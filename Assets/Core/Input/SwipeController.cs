@@ -50,9 +50,9 @@ namespace GameInput
         {
             if(isSwipping)
             {
-                CurrentPos = Input.mousePosition;
+                CurrentPos = isMobile ? Input.GetTouch(0).position : Input.mousePosition;
                 Vector2 difference = new Vector2() { x = CurrentPos.x - previousPos.x };
-                SwipeEvent(difference);
+                if (SwipeEvent != null) SwipeEvent(difference);
                 previousPos = CurrentPos;
             }
         }
